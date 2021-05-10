@@ -1,2 +1,1 @@
-export { default as PicModal } from './PicModal/index.js';
-
+export { GetImageBaseUrl, ImagePreview } from './ImagePreview/index.js';

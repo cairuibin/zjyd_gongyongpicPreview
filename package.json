@@ -1,7 +1,7 @@
 {
   "private": false,
-  "name": "gongyongmodal",
-  "version": "1.2.0",
+  "name": "gongyongpicpreview",
+  "version": "1.2.2",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",

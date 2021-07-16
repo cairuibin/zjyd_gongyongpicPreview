@@ -14,6 +14,7 @@ const CancelBtn = props => {
         right: -2,
         top: -13,
         zIndex: 1,
+        cursor: 'pointer',
       }}
     >
       <svg
@@ -101,7 +102,6 @@ const GetImageBase = props => {
     </Provider>
   );
 };
-
 class Image extends Component {
   state = {
     curTab: this.props.ImgList[this.props.curPreview || 0][
@@ -137,6 +137,41 @@ class Image extends Component {
           {({ imageBaseUrl }) => (
             <div className="pic_image_preview_contents">
               <div className="pic_image_preview_img">
+                <span
+                  className="pre_btn"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    //上一张
+                    let index = ImgList.findIndex(v => v.id === curTab);
+                    if (index !== -1) {
+                      if (index === 0) {
+                        this.setState({
+                          curTab: ImgList[ImgList.length - 1].id,
+                        });
+                      } else {
+                        this.setState({
+                          curTab: ImgList[index - 1].id,
+                        });
+                      }
+                    }
+                  }}
+                >
+                  <svg
+                    width="57"
+                    height="57"
+                    viewBox="0 0 57 57"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M28.2134 3L3.00018 28.2132L28.2134 53.4264"
+                      stroke="white"
+                      stroke-width="4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
                 {ImgList.map(v =>
                   curTab === v[srcProp] && curTab ? (
                     <div
@@ -147,12 +182,46 @@ class Image extends Component {
                         position: 'relative',
                       }}
                     >
-                      {' '}
                       <CancelBtn onCancel={onCancel} />
                       <img src={imageBaseUrl + curTab} alt="" />
                     </div>
                   ) : null,
                 )}
+                <span
+                  className="next_btn"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    //下一张
+                    let index = ImgList.findIndex(v => v.id === curTab);
+                    if (index !== -1) {
+                      if (index === ImgList.length - 1) {
+                        this.setState({
+                          curTab: ImgList[0].id,
+                        });
+                      } else {
+                        this.setState({
+                          curTab: ImgList[index + 1].id,
+                        });
+                      }
+                    }
+                  }}
+                >
+                  <svg
+                    width="57"
+                    height="57"
+                    viewBox="0 0 57 57"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M28.083 3L53.2962 28.2132L28.083 53.4264"
+                      stroke="white"
+                      stroke-width="4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
               </div>
               {ImgList.length > 1 && (
                 <div className="pic_image_preview_list">
@@ -163,7 +232,11 @@ class Image extends Component {
                         onClick={() => {
                           this.setTab(v[srcProp]);
                         }}
-                        className="pic_image_preview_item"
+                        className={
+                          v.id === curTab
+                            ? 'pic_image_preview_item pic_act'
+                            : 'pic_image_preview_item'
+                        }
                       >
                         <img src={imageBaseUrl + v[srcProp]} alt="" />
                       </div>

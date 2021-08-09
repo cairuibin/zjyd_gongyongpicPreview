@@ -1,5 +1,4 @@
 import React, { Component, createContext } from 'react';
-
 import * as ReactDOM from 'react-dom';
 import './index.css';
 const { Provider, Consumer } = createContext({
@@ -91,7 +90,6 @@ const CancelBtn = props => {
   );
 };
 const GetImageBase = props => {
-  console.log(props);
   return (
     <Provider
       value={{
@@ -108,6 +106,19 @@ class Image extends Component {
       this.props.srcProp || 'id'
     ],
   };
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (
+      this.props.ImgList !== nextProps.ImgList ||
+      this.props.curPreview !== nextProps.curPreview
+    ) {
+      this.setState({
+        curTab:
+          nextProps.ImgList[nextProps.curPreview || 0][
+            nextProps.srcProp || 'id'
+          ],
+      });
+    }
+  }
   setTab = id => {
     this.setState(() => {
       return {
@@ -142,15 +153,15 @@ class Image extends Component {
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
                     //上一张
-                    let index = ImgList.findIndex(v => v.id === curTab);
+                    let index = ImgList.findIndex(v => v[srcProp] === curTab);
                     if (index !== -1) {
                       if (index === 0) {
                         this.setState({
-                          curTab: ImgList[ImgList.length - 1].id,
+                          curTab: ImgList[ImgList.length - 1][srcProp],
                         });
                       } else {
                         this.setState({
-                          curTab: ImgList[index - 1].id,
+                          curTab: ImgList[index - 1][srcProp],
                         });
                       }
                     }
@@ -183,7 +194,12 @@ class Image extends Component {
                       }}
                     >
                       <CancelBtn onCancel={onCancel} />
-                      <img src={imageBaseUrl + curTab} alt="" />
+                      <img
+                        src={
+                          'https://gw-testa.cvei.cn/public_resource/' + curTab
+                        }
+                        alt=""
+                      />
                     </div>
                   ) : null,
                 )}
@@ -192,15 +208,15 @@ class Image extends Component {
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
                     //下一张
-                    let index = ImgList.findIndex(v => v.id === curTab);
+                    let index = ImgList.findIndex(v => v[srcProp] === curTab);
                     if (index !== -1) {
                       if (index === ImgList.length - 1) {
                         this.setState({
-                          curTab: ImgList[0].id,
+                          curTab: ImgList[0][srcProp],
                         });
                       } else {
                         this.setState({
-                          curTab: ImgList[index + 1].id,
+                          curTab: ImgList[index + 1][srcProp],
                         });
                       }
                     }
@@ -233,12 +249,18 @@ class Image extends Component {
                           this.setTab(v[srcProp]);
                         }}
                         className={
-                          v.id === curTab
+                          v[srcProp] === curTab
                             ? 'pic_image_preview_item pic_act'
                             : 'pic_image_preview_item'
                         }
                       >
-                        <img src={imageBaseUrl + v[srcProp]} alt="" />
+                        <img
+                          src={
+                            'https://gw-testa.cvei.cn/public_resource/' +
+                            v[srcProp]
+                          }
+                          alt=""
+                        />
                       </div>
                     );
                   })}

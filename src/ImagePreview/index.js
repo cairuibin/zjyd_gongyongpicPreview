@@ -1,4 +1,5 @@
 import React, { Component, createContext } from 'react';
+
 import * as ReactDOM from 'react-dom';
 import './index.css';
 const { Provider, Consumer } = createContext({
@@ -194,12 +195,7 @@ class Image extends Component {
                       }}
                     >
                       <CancelBtn onCancel={onCancel} />
-                      <img
-                        src={
-                          'https://gw-testa.cvei.cn/public_resource/' + curTab
-                        }
-                        alt=""
-                      />
+                      <img src={imageBaseUrl + curTab} alt="" />
                     </div>
                   ) : null,
                 )}
@@ -254,13 +250,7 @@ class Image extends Component {
                             : 'pic_image_preview_item'
                         }
                       >
-                        <img
-                          src={
-                            'https://gw-testa.cvei.cn/public_resource/' +
-                            v[srcProp]
-                          }
-                          alt=""
-                        />
+                        <img src={imageBaseUrl + v[srcProp]} alt="" />
                       </div>
                     );
                   })}
